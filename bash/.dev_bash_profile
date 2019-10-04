@@ -1,0 +1,39 @@
+
+# Function: backup Lazacademy
+# ---------------------------------------------
+backupLazacademy() {
+
+	abbreviateddate=`date "+%b%d.%H%M"`
+	mdyDate=`date "+%m.%d.%Y"`
+	backupsDirectory="/Users/johnny/Dropbox/Dev/Backups"
+	targetDirectory="$backupsDirectory/$mdyDate/$abbreviateddate$1"
+	echo Setting up new directory: $targetDirectory
+	mkdir -p $targetDirectory
+		
+	latestCode="/Users/johnny/Dropbox/Dev/Lazacademy/assets/javascripts"
+	echo "Copying $latestCode (main.js and app)"
+	echo "to $targetDirectory"
+	cp "$latestCode"/main.js "$targetDirectory"
+	cp -r "$latestCode"/app "$targetDirectory"
+	echo Done!
+	cd $targetDirectory
+}
+alias blaz=backupLazacademy;
+
+
+kickItOff() {
+	cd /Users/johnny/Dropbox/Dev/Lazacademy
+	open -a Terminal "./mim.sh"
+	./test.sh
+}
+alias 1=kickItOff
+
+
+# Function: backup Lazacademy
+# ---------------------------------------------
+getDate() {
+
+	date=`date "+%m/%d/%Y"`
+	echo $date
+}
+alias getdate=getDate

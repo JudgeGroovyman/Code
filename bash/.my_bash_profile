@@ -1,0 +1,181 @@
+
+chrome () {
+  /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome $* 2>&1 &
+}
+
+# For Markdown Previewing 
+startgrip () {
+     echo "http://localhost:"$2
+     grip --user-content --user=judgegroovyman --context=judgegroovyman/shiny-fortnight --pass=vanhalen1 $1 $2
+}
+
+# cd to the most recently modified directory
+alias lcd='cd -- "$(ls -dt -- */ | head -1)"'
+
+# Jump to the latest sub-sub-directory in programs
+alias pdir='cd "/Users/johnny/Dropbox/Johnnys Documents/programs";lcd;lcd'
+
+# \
+# Theres a backslash for you!
+
+# This synchronizes my kindle and Calibre directories
+function syncTodaysKindleBooksToCalibre() {
+    kindleBookDirectory="/Users/johnny/Library/Containers/com.amazon.Kindle/Data/Library/Application Support/Kindle/My Kindle Content"
+    echo "$kindleBookDirectory"
+    cd "$kindleBookDirectory"
+    latestBooks=`find *.azw -mtime -1` 
+    cp -n $latestBooks /Users/johnny/Documents/ebooks/Kindle
+}
+alias ksync=syncTodaysKindleBooksToCalibre
+function syncTodaysCalibreBooksToDropbox(){
+    calibreDirectory="/Users/johnny/Documents/ebooks"
+    cd "$calibreDirectory"
+    IFS=$'\n'
+    for file in $(find . -mtime -1 -iname '*.txt') ; do
+        echo $file
+        cp -n $file /Users/johnny/Dropbox/Johnnys\ Documents/Goodreader/Calibre
+    done
+    for file in $(find . -mtime -1 -iname '*.epub') ; do
+        echo $file
+        cp -n $file /Users/johnny/Dropbox/Johnnys\ Documents/Goodreader/Calibre_epub
+    done
+
+    for file in $(find . -mtime -1 -iname '*.mobi') ; do
+        echo $file
+        cp -n $file /Users/johnny/Dropbox/Johnnys\ Documents/Goodreader/Calibre_mobi
+    done
+    
+  echo Complete
+  cd /Users/johnny/Dropbox/Johnnys\ Documents/Goodreader/
+  find . -mtime -1
+    
+}
+alias csync=syncTodaysCalibreBooksToDropbox
+
+
+function fixvid() { avconvert -p PresetAppleM4V720pHD -s "$@" -o out.mp4;}
+
+
+# a simple timer
+function countWithDisplayTo() 		{ date; 
+for (( c=1; c<=$@; c++ ))
+do
+    sleep 1;
+    echo .;
+done;
+say "Ohmm"; 
+date;}
+alias c="countWithDisplayTo"
+
+alias he="open '/Users/johnny/Dropbox/Johnnys Documents/help.rtf'"
+alias bp="mate ~/.bp ~/.bash_profile ~/.fiverr_bash_profile ~/.bash_profile_voices ~/.dev_bash_profile"
+alias mail="open /Applications/Mail.app"
+alias ringtones="open /Users/johnny/Dropbox/Ringtones"
+
+# this is a simple list reminder of my most useful commands.  I can type this anytime to remind me.
+alias h="echo he, bp"
+
+# This is a keyboard maestro shortcut to copy the current safari tab to text mate
+alias copytab="osascript -e 'tell application \"Keyboard Maestro Engine\" to do script \"ACEAF863-B21E-4AAC-A168-39BF1899FBFE\"'"
+
+function makegif2() {
+    convert +dither -colors 256 -delay 65 -loop 0 $1 $1 $2 $2 $2 $2 tempgif.gif
+    gifsicle --optimize tempgif.gif > newgif.gif
+    rm tempgif.gif
+}
+function makegif3() {
+    convert +dither -colors 256 -delay 65 -loop 0 $1 $1 $2 $2 $3 $3 $3 $3 tempgif.gif
+    gifsicle --optimize tempgif.gif > newgif.gif
+    rm tempgif.gif
+}
+function makegif() {
+    args=("$@")
+    filenameList=""
+    if [ "$#" -lt 1 ]; then
+        echo "Put pic parameters please ... "
+    fi
+    if [ "$#" -gt 0 ]; then
+        args=("$@")
+
+        min=0;
+        max="$#"
+        for (( min=0; min<=max; min++ ))
+        do
+            if [ $min -eq 0 ]; then
+                filenameList="$filenameList ${args[$min]}"
+                filenameList="$filenameList ${args[$min]}"
+                filenameList="$filenameList ${args[$min]}"
+            fi
+
+            filenameList="$filenameList ${args[$min]}"
+            filenameList="$filenameList ${args[$min]}"
+                        
+            newmax=`expr $max - 1`
+            if [ $min -eq $newmax ]; then
+                filenameList="$filenameList ${args[$min]}"
+                filenameList="$filenameList ${args[$min]}"
+                filenameList="$filenameList ${args[$min]}"
+            fi
+
+
+        done;
+
+    fi
+    
+    convert +dither -colors 256 -delay 65 -loop 0 $filenameList ./tempgif.gif
+    gifsicle --optimize tempgif.gif > newgif.gif
+    rm tempgif.gif
+}
+
+function templateFunctionWithArgs() {
+    args=("$@")
+    echo $0 $1 $2 $3
+    echo $args
+}
+
+function chooseRandomFileFromDirectory() {
+    # Identify the directory with the files
+    files=(/Users/johnny/"Box Sync"/Fun/beavisandbutthead/*)
+
+    # Determine how many files are in that directory
+    numberOfFiles=${#files[@]}
+    echo Total Number of Files: $numberOfFiles
+    
+    # Random Number from 0 to the number of files
+    randomnum=$((RANDOM % numberOfFiles))
+    echo Random Number from 0 to $numberOfFiles: $randomnum
+    
+    # Choose the Random file
+    randomFile=${files[$randomnum]}
+    echo Random File: $randomFile
+    
+}
+
+# Function: backup Chat
+# ---------------------------------------------
+backupiChat() {
+
+	abbreviateddate=`date "+%b%d.%H%M"`
+	mdyDate=`date "+%m.%d.%Y"`
+	backupsDirectory="/Users/johnny/Desktop"
+	targetDirectory="$backupsDirectory/$mdyDate/$abbreviateddate"
+	echo Setting up new directory: $targetDirectory
+	mkdir -p $targetDirectory
+		
+	latestData="/Users/johnny/Library/Containers/com.apple.iChat"
+	echo "Copying $latestData"
+	echo "to $targetDirectory"
+	echo cp -r "$latestData" \"$targetDirectory\" | head
+	#cp -r "$latestData" \"$targetDirectory\" | head
+	sleep 1
+		
+	latestData="/Users/johnny/Library/Messages"
+	echo "Copying $latestData"
+	echo "to $targetDirectory"
+	#cp -r "$latestData" "$targetDirectory"
+	
+	echo Done!
+}
+alias bchat=backupiChat;
+
+

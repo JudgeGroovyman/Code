@@ -1,0 +1,41 @@
+
+
+function ov1() 			{ say -v Karen		-f "$@" -o "$@".Karen.m4a 		;}
+function ov2() 			{ say -v Lee		-f "$@" -o "$@".Lee.m4a 		;}
+function ov3()  		{ say -v Fiona	-f "$@" -o "$@".Fiona.m4a 	;}
+function ov4() 			{ say -v Allison       -f "$@" -o "$@".Allison.m4a 		;}
+function ov5()  		{ say -v Ava 		-f "$@" -o "$@".Ava.m4a 		;}
+function ov6() 			{ say -v Kathy		-f "$@" -o "$@".Kathy.m4a 		;}
+function ov7() 			{ say -v Samantha		-f "$@" -o "$@".Samantha.m4a 		;}
+function ov8() 			{ say -v Susan		-f "$@" -o "$@".Susan.m4a 		;}
+function ov9() 			{ say -v Alex		-f "$@" -o "$@".Alex.m4a 		;}
+function ov10() 			{ say -v Tom		-f "$@" -o "$@".Tom.m4a 		;}
+
+function sv() {	say -v Kathy		-f "$@" -o "$@".Kathy.m4a 		;
+		say -v Vicki		-f "$@" -o "$@".Vicki.m4a 		;
+ 		say -v Victoria		-f "$@" -o "$@".Victoria.m4a 	;
+		say -v Alex        	-f "$@" -o "$@".Alex.m4a 		;
+ 		say -v Bruce 		-f "$@" -o "$@".Bruce.m4a 		;
+		say -v Fred		-f "$@" -o "$@".Fred.m4a 		;}
+alias six_voices=“sv”
+
+function add_six_soundtracks_with_script.txt() {
+                say -v Kathy		-f script.txt -o sdtrk.Kathy.m4a 		;
+                muxmovie ./"$@" sdtrk.Kathy.m4a -self-contained -o Kathy_"$@"         ;
+                rm sdtrk.Kathy.m4a ;
+		say -v Vicki		-f script.txt -o sdtrk.Vicki.m4a 		;
+                muxmovie ./"$@" sdtrk.Vicki.m4a -self-contained -o  Vicki_"$@"        ;
+                rm sdtrk.Vicki.m4a ;
+ 		say -v Victoria		-f script.txt -o sdtrk.Victoria.m4a 	;
+                muxmovie ./"$@" sdtrk.Victoria.m4a -self-contained -o Victoria_"$@"    ;
+                rm sdtrk.Victoria.m4a ;
+		say -v Alex        	-f script.txt -o sdtrk.Alex.m4a 		;
+                muxmovie ./"$@" sdtrk.Alex.m4a -self-contained -o Alex_"$@"    ;
+                rm sdtrk.Alex.m4a ;
+ 		say -v Bruce 		-f script.txt -o sdtrk.Bruce.m4a 		;
+                muxmovie ./"$@" sdtrk.Bruce.m4a -self-contained -o Bruce_"$@"    ;
+                rm sdtrk.Bruce.m4a ;
+		say -v Fred		-f script.txt -o sdtrk.Fred.m4a 		;
+                muxmovie ./"$@" sdtrk.Fred.m4a -self-contained -o Fred_"$@"    ;
+                rm sdtrk.Fred.m4a ;}
+alias ss="add_six_soundtracks_with_script.txt"

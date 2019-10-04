@@ -1,0 +1,167 @@
+
+
+# To support various Firefox Profiles:
+alias prudence='/Applications/Firefox.app/Contents/MacOS/firefox-bin -P Prudence -no-remote&'
+alias default='/Applications/Firefox.app/Contents/MacOS/firefox-bin -P default -no-remote&'
+# One in .fiverr_bash_profile called fff
+alias ff='/Applications/Firefox.app/Contents/MacOS/firefox-bin -P -no-remote'
+moz () { /Applications/Firefox.app/Contents/MacOS/firefox-bin -P $* -no-remote; }
+
+
+alias fiverr='echo "fdir, fff, sfd username, ssd username, pfo, pfs, pfoAll, getUsername, start, finish"'
+alias f='/Applications/Firefox.app/Contents/MacOS/firefox-bin -P FreshFiverr -no-remote &'
+alias fdir='cd "/Users/johnny/Documents/Fiverr Orders Inwork/";lcd'
+
+# Jump to the latest directory in this directory
+alias latestdir='ls -1ct | head -1'
+alias lcd='cd "`latestdir`"'
+
+
+# Function: Setup Fiverr Directory
+# ---------------------------------------------
+sfd() {
+
+	abbreviateddate=`date "+%b %d"`
+	targetDirectory="/Users/johnny/Documents/Fiverr Orders Inwork/$abbreviateddate ORDER - $1"
+	echo Setting up new directory: $targetDirectory
+	mkdir "$targetDirectory"
+	
+	# Copy the garageband template in
+	echo Setting up garage band: "$targetDirectory/Fiverr - $1.band"
+	cp -r "/Users/johnny/Dropbox/Johnnys Documents/Jollysites Dropbox/Fiverr Campaign/Fiverr - Template.band" "$targetDirectory/Fiverr - $1.band"
+	
+	
+	# Move the most recently downloaded file into the target directory
+       	# Get the most recently downloaded file in downloads
+	mostRecentDownload=`find ~/Downloads -type f -iname $(ls -t ~/Downloads | head -1)`
+	echo Copying $mostRecentDownload to fiverr directory
+	cp "$mostRecentDownload" "$targetDirectory"
+	
+	touch "$targetDirectory/$1_INSTRUCTIONS.txt"
+	touch "$targetDirectory/$1_currentScript.txt"
+}
+alias setup-fiverr-directory=sfd
+
+
+# Function: Setup Fiverr SAMPLE Directory
+# ---------------------------------------------
+ssd() {
+
+	abbreviateddate=`date "+%b %d"`
+	targetDirectory="/Users/johnny/Documents/Fiverr Orders Inwork/$abbreviateddate SAMPLE - $1"
+	echo Setting up new directory: $targetDirectory
+	mkdir "$targetDirectory"
+	
+	# Copy the garageband template in
+	echo Setting up garage band: "$targetDirectory/Fiverr - $1.band"
+	cp -r "/Users/johnny/Dropbox/Johnnys Documents/Jollysites Dropbox/Fiverr Campaign/Fiverr - Template.band" "$targetDirectory/Fiverr - $1 SAMPLE.band"
+	
+	
+	# Move the most recently downloaded file into the target directory
+       	# Get the most recently downloaded file in downloads
+	mostRecentDownload=`find ~/Downloads -type f -iname $(ls -t ~/Downloads | head -1)`
+	echo Copying over $mostRecentDownload
+	cp "$mostRecentDownload" "$targetDirectory"
+	
+	touch "$targetDirectory/$1_notes.txt"
+	
+}
+alias setup-sample-directory=ssd
+
+# Package Fiverr Order
+# ---------------------------------------------
+pfo() {
+	fdir
+	
+	# zip the most recently touched mp3 with the thank you pdf
+	alias latestmp3='ls -1ct *.mp3 | head -1'
+	
+	# Determine the filename (with their fiverr username)
+	zipfile="`getUsername` - Thank You from John Delivers.zip"
+	
+	# Identify the PDF File I want to use
+	pdffile="/Users/johnny/Dropbox/Johnnys Documents/Jollysites Dropbox/Fiverr Campaign/Thank You Awesome Fiverr Customer.pdf"
+	pdffile="/Users/johnny/Dropbox/Johnnys Documents/Jollysites Dropbox/Fiverr Campaign/Bulk Orders Special Offer.pdf"
+	
+	#zip -X -j "$zipfile" "$latestmp3" "$pdffile"
+    zip -X -j "$zipfile" "`latestmp3`" "$pdffile"
+	
+	ls -l "`latestmp3`"
+	
+	if ls *.zip &> /dev/null; then
+		unzip -lv "$zipfile"
+	else
+	    echo "$zipfile was apparently not created"
+	fi
+	
+}
+alias package-fiverr-order=pfo
+
+# Package Fiverr Order with All
+# ---------------------------------------------
+pfoAll() {
+	fdir
+	
+	# Determine the filename (with their fiverr username)
+	zipfile="`getUsername` - Thank You from John Delivers.zip"
+	
+	# Identify the PDF File I want to use
+	pdffile="/Users/johnny/Dropbox/Johnnys Documents/Jollysites Dropbox/Fiverr Campaign/Thank You Awesome Fiverr Customer.pdf"
+	pdffile="/Users/johnny/Dropbox/Johnnys Documents/Jollysites Dropbox/Fiverr Campaign/Bulk Orders Special Offer.pdf"
+	
+    zip -X -j "$zipfile" *.mp3 "$pdffile"
+	
+	ls -l *.mp3
+	
+	if ls *.zip &> /dev/null; then
+		unzip -lv "$zipfile"
+	else
+	    echo "$zipfile was apparently not created"
+	fi
+	
+}
+alias package-fiverr-order-with-all=pfoAll
+
+# Package Fiverr Sample
+# ---------------------------------------------
+pfs() {
+	fdir
+	
+	# zip the most recently touched mp3 with the thank you pdf
+	alias latestmp3='ls -1ct *.mp3 | head -1'
+	
+	# Determine the filename (with their fiverr username)
+	zipfile="`getUsername` - Thank You for letting me provide this sample.zip"
+	
+	# Identify the PDF File I want to use
+	pdffile="/Users/johnny/Dropbox/Johnnys Documents/Jollysites Dropbox/Fiverr Campaign/Here is the Sample you Requested.pdf"
+	
+	#zip -X -j "$zipfile" "$latestmp3" "$pdffile"
+    zip -X -j "$zipfile" "`latestmp3`" "$pdffile"
+	
+	ls -l "`latestmp3`"
+	
+	if ls *.zip &> /dev/null; then
+		unzip -lv "$zipfile"
+	else
+	    echo "$zipfile was apparently not created"
+	fi
+	
+}
+alias package-fiverr-sample=pfs
+
+
+#    set start and end times (by making files with timestamped names)
+function start() {
+	touch "Tstart $(date "+%F %H:%M:%S")";
+	echo "Done";
+}
+function finish() {
+	touch "Tdone $(date "+%F %H:%M:%S")";
+	echo "Done";
+}
+
+getUsername(){
+	current_dir="`PWD | sed -e 's/.*\- //'`"
+	echo $current_dir
+}

@@ -1,0 +1,21 @@
+     1                                  ; nasm -f bin second.asm -o second.com
+     2                                  
+     3                                  ;
+     4                                  ; The incredible keyboard reading program
+     5                                  ;
+     6                                  
+     7                                  org 0x0100 		; Start point of program for a COM file
+     8                                  start:
+     9                                  	
+    10 00000000 B400                    	mov ah,0x00	; keyboard read
+    11 00000002 CD16                    	int 0x16		; Call the BIOS to read it
+    12                                  	
+    13 00000004 3C1B                    	cmp al,0x1b	; ESC key pressed?
+    14 00000006 7409                    	je exit_to_command_line
+    15 00000008 B40E                    	mov ah,0x0e	; Load AH with code for terminal output
+    16 0000000A BB0F00                  	mov bx,0x000f	; BH is page zero. BL is color (graphic mode)
+    17 0000000D CD10                    	int 0x10		; Call the BIOS for displaying one letter
+    18 0000000F EBEF                    	jmp start
+    19                                  
+    20                                  exit_to_command_line:
+    21 00000011 CD20                    	int 0x20

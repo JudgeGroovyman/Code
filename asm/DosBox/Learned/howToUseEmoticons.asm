@@ -1,6 +1,7 @@
 
+
 	org 0x0100
-		
+	
 	in al,(0x40)
 	and al,0x07
 	add al,0x30
@@ -12,10 +13,11 @@ game_loop:
 	cmp al,cl
 	jne game_loop
 	call display_letter
-	mov al,':'
+	mov al,0x01
 	call display_letter
-	mov al,')'
+	mov al,0x03
 	call display_letter
+	
 	
 
 ; --------------

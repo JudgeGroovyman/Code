@@ -1,6 +1,10 @@
 
 	org 0x0100
-		
+	
+	; nop
+	; uncomment the previous line to make the game one byte larger
+	
+	
 	in al,(0x40)
 	and al,0x07
 	add al,0x30

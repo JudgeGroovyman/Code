@@ -1,8 +1,3 @@
-# first.asm #
-This is a simple hello world which I tinkered with a bit
-
-# second.asm #
-This is a simple keyboard reading program
 
 # DosBox #
 using dosbox (or Boxerapp on mac) you can run simpler assembly programs than you can when you are in the infrastructure of the advanced 2019 operating system apis.  You are much closer to the bare metal.
